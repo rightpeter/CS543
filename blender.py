@@ -2,19 +2,17 @@ import bpy
 import time
 import json
 
-ROOT_FOLDER = 'c:\users\lhh97\desktop\CS543'
+ROOT_FOLDER = 'c:\\users\\lhh97\\desktop\\CS543'
 SLEEP_TIME = 0.2
 PIC_ORIENTATION = (0, 1, 0)
 
 
-def create_worker(scene, worker):
+def create_worker(worker):
     obj = bpy.data.objects.new(worker['id'], None)
 
-    scene.objects.link(obj)
-
     obj.location = tuple(worker['coord'])
-    empty.rotation_euler = PIC_ORIENTATION
-    empty.empty_draw_type = 'IMAGE'
+    obj.rotation_euler = PIC_ORIENTATION
+    obj.empty_draw_type = 'IMAGE'
     pic_name = worker['id'] + '.jpg'
     img = bpy.data.images.load(ROOT_FOLDER + '\\' + pic_name)
     obj.data = img
@@ -23,10 +21,11 @@ def create_worker(scene, worker):
 
 
 def main():
-    with open(ROOT_FOLDER + '\blender.json') as f:
+    with open(ROOT_FOLDER + '\\blender.json') as f:
         coord = json.load(f)
 
     objs = bpy.data.objects
+    scene = bpy.context.scene
 
     previous_workers = []
     for k in sorted(coord.keys()):
@@ -39,7 +38,8 @@ def main():
         worers = coord[k]
         for worker in worers:
             previous_workers.append(worker['id'])
-            obj = create_worker(worker)
+            obj = create_worker(scene, worker)
+            scene.objects.link(obj)
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         time.sleep(SLEEP_TIME)
