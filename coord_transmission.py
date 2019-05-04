@@ -9,6 +9,7 @@ import argparse
 
 import skimage
 import skimage.transform
+import pickle
 
 marked_points = []
 premarked_points = [[214, 147], [309, 146], [513, 107], [325, 190], [599, 208],
@@ -98,6 +99,9 @@ def fit_transmission(img, marked_points, target_points):
     print(f'marked_points: {marked_points}')
     H = calculate_homography(marked_points, target_points)
     print(f'H: {H}')
+
+    with open('H.pk', 'wb') as f:
+        pickle.dump(H, f)
 
     transform = skimage.transform.ProjectiveTransform(H)
     show_res(img, transform)
