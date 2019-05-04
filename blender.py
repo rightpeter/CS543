@@ -36,7 +36,7 @@ def main():
         previous_workers = []
 
         worers = coord[k]
-        for worker in worers:
+        for _, worker in worers:
             previous_workers.append(worker['id'])
             obj = create_worker(scene, worker)
             scene.objects.link(obj)
