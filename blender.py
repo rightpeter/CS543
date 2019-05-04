@@ -35,10 +35,10 @@ def main():
         scene.update()
         previous_workers = []
 
-        worers = coord[k]
-        for _, worker in worers:
+        workers = coord[k]
+        for _, worker in workers.items():
             previous_workers.append(worker['id'])
-            obj = create_worker(scene, worker)
+            obj = create_worker(worker)
             scene.objects.link(obj)
 
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
